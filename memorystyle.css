@@ -50,6 +50,7 @@ li a:hover {
 }
 
 .memorygameContainer {
+  width: 800px;
   margin: 10%;
   padding: 16px;
   display: grid;
@@ -60,10 +61,19 @@ li a:hover {
   justify-items: center;
 }
 
-.memorygameContainer .imgContainer {
+.memorygameContainer .card {
   width: 150px;
   height: 150px;
   display: block;
   padding: 0;
   background-color: #ffe066;
+}
+
+/*styling front face*/
+.front {
+  width: inherit;
+  height: inherit;
+  background: url("logos/qslogo.png") center no-repeat;
+  background-size: cover;
+  box-shadow: 0 0 8px 0px black;
 }
