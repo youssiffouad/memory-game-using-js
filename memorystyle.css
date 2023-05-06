@@ -66,14 +66,34 @@ li a:hover {
   height: 150px;
   display: block;
   padding: 0;
-  background-color: #ffe066;
+
+  position: relative;
+  transform-style: preserve-3d;
+}
+
+/*commom style between  2faces*/
+.face {
+  width: inherit;
+  height: inherit;
+  backface-visibility: hidden;
+  box-shadow: 0 0 8px 0px black;
 }
 
 /*styling front face*/
 .front {
-  width: inherit;
-  height: inherit;
   background: url("logos/qslogo.png") center no-repeat;
   background-size: cover;
-  box-shadow: 0 0 8px 0px black;
+  position: absolute;
 }
+
+.back {
+  position: absolute;
+  transform: rotateY(180deg);
+  top: 0;
+  left: 0;
+}
+
+/* .card:hover {
+  transform: rotateY(180deg);
+  transition: all 1s ease;
+} */
