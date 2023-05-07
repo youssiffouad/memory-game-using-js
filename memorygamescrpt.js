@@ -15,6 +15,8 @@ for (let i = 0; i < noofcards; i++) {
   mgcont.appendChild(card);
 }
 
+//--------------------------------------------------------------------------------------
+
 //creating frontface, backface and appending to card
 
 //---1-we need to get all card in an array
@@ -26,6 +28,8 @@ for (let i = 0; i < cards.length; i++) {
   back.classList.add("back", "face");
   cards[i].append(back, front);
 }
+
+//-----------------------------------------------------------------------------------------
 
 //styling of back must be dynamic to dynamically assign imgs to cards
 //1-cerating imgobject(url,categoryno.,)
@@ -58,6 +62,8 @@ for (let i = 0; i < noofcards; i++) {
 
 console.log(imglist);
 
+//-------------------------------------------------------------------------
+
 //----2-shuffle array of photos
 function shuffleArray(array) {
   for (let i = array.length - 1; i > 0; i--) {
@@ -69,6 +75,8 @@ function shuffleArray(array) {
 shuffleArray(imglist);
 console.log(imglist);
 
+//--------------------------------------------------------------------------
+
 //----3-assign imgsurls to backface of cards
 
 let backs = document.querySelectorAll(".back");
@@ -78,32 +86,79 @@ for (let i = 0; i < backs.length; i++) {
   ].style.cssText = `background: url(${imglist[i].imgsrc}.jpg) ;background-position: center;background-repeat: no-repeat;background-size: cover;`;
 }
 
+//--------------------------------------------------------------------------
+
 //defining rotate completely fn
 function rotate() {
   this.style.cssText = `transform: rotateY(180deg);
   transition: all 1s ease;`;
 }
+//------------------------------------------------------------------
+
 //defining reverse rotate
 function revrotate() {
-  this.style.cssText = `transform: rotateY(0deg);
-  transition: all 1s ease;`;
+  console.log(this);
+  rotate.call(this); //flip
+  e = this;
+
+  setTimeout(
+    function () {
+      e.style.cssText = `transform: rotateY(0deg);
+    transition: all 1s ease;`; //flip back
+    },
+    800,
+    e
+  );
+}
+//--------------------------------------------------------------------------
+
+//declaring fn odd that keep card flipped if click is odd
+function odd(currin) {
+  console.log(`i am odd with currundex of ${currin} and 
+  my card is ${cards[currin]}`);
+
+  rotate.call(cards[currin]);
 }
 
-//defining fn even rotate
-function even(ele) {}
+//--------------------------------------------------------------------
 
-//defining function match
+//declaring fn check source to check url of 2 imgs in imglist equql or not
 
-function match(indxcard1, indxcard2) {
-  //note that we wanna match on backs.url ===imglist.imgsrc
-}
-//logic of clicking
-let clickno = 1;
-//making fn to decide what to do based on click is evevn or odd
-function decide(cn, ele) {
-  if (c % 2 == 1) {
-    rotate.call(ele);
+function checksrc(currin, previn) {
+  if (imglist[currin].imgsrc == imglist[previn].imgsrc) {
+    rotate.call(cards[currin]);
+    console.log(`sources are equal`);
   } else {
-    even();
+    revrotate.call(cards[currin]);
+    revrotate.call(cards[previn]);
+    console.log(`sources are not equal`);
   }
+}
+
+//------------------------------------------------------------------------------
+
+//declaring fn even that checks whether current indeex = prev index or not
+function even(currin, previn) {
+  console.log(`i am even`);
+  checksrc(currin, previn); //checks if urls of current and previous are equal
+}
+//declaring fn that checks counter of no clicks is even or odd
+let clickcounter = 0;
+let preindex = -1;
+function checkcounter(c, currin, previn) {
+  if (c % 2 == 1) {
+    odd(currin);
+  } else {
+    even(currin, previn);
+  }
+  console.log(`currindex is ${currin} and previndex is${previn}  `);
+  console.log(imglist[currin].imgsrc);
+}
+
+for (let i = 0; i < cards.length; i++) {
+  cards[i].addEventListener("click", function () {
+    clickcounter++;
+    checkcounter(clickcounter, i, preindex);
+    preindex = i;
+  });
 }
