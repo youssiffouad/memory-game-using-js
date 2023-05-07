@@ -95,23 +95,33 @@ function rotate() {
 }
 //------------------------------------------------------------------
 
+//defining delay
+function delay(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
 //defining reverse rotate
-function revrotate() {
+async function revrotate() {
   console.log(this);
-  rotate.call(this); //flip
-  e = this;
+  rotate.call(cards[this]); //flip
 
-  setTimeout(
-    function () {
-      e.style.cssText = `transform: rotateY(0deg);
-    transition: all 1s ease;`; //flip back
-    },
-    800,
-    e
-  );
+  await delay(1000);
+  cards[this].style.cssText = `transform: rotateY(0deg);
+transition: all 1s ease;`;
 }
 //--------------------------------------------------------------------------
 
+//defining reverse both
+function revboth(curr, prev) {
+  revrotate.call(curr);
+  revrotate.call(prev);
+}
+
+//------------------------------------------------------------------
+
+//defining wait fn to wait for settimeout in revrotate
+function wait(a, b) {
+  revboth(a, b);
+}
 //declaring fn odd that keep card flipped if click is odd
 function odd(currin) {
   console.log(`i am odd with currundex of ${currin} and 
@@ -129,9 +139,7 @@ function checksrc(currin, previn) {
     rotate.call(cards[currin]);
     console.log(`sources are equal`);
   } else {
-    revrotate.call(cards[currin]);
-    revrotate.call(cards[previn]);
-    console.log(`sources are not equal`);
+    wait(currin, previn);
   }
 }
 
@@ -156,6 +164,7 @@ function checkcounter(c, currin, previn) {
 }
 
 for (let i = 0; i < cards.length; i++) {
+  let mycard = cards[i];
   cards[i].addEventListener("click", function () {
     clickcounter++;
     checkcounter(clickcounter, i, preindex);
