@@ -95,33 +95,43 @@ function rotate() {
 }
 //------------------------------------------------------------------
 
-//defining delay
-function delay(ms) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
 //defining reverse rotate
-async function revrotate() {
+function revrotate() {
   console.log(this);
   rotate.call(cards[this]); //flip
-
-  await delay(1000);
-  cards[this].style.cssText = `transform: rotateY(0deg);
-transition: all 1s ease;`;
+  e = this;
+  //fe
+  //7aga
+  //ghareba
+  //if u pass(this)---> right
+  //if u pass(e)---->false
+  // |---------------------------------------------------|
+  // |every this pointer knows where it ponts even after |
+  // | revrotate is called by another this               |
+  // |---------------------------------------------------|
+  setTimeout(
+    () => {
+      console.log(`i will rotate ${this}`);
+      cards[this].style.cssText = `transform: rotateY(0deg);
+    transition: all 1s ease;`;
+    },
+    1000,
+    this
+  );
 }
 //--------------------------------------------------------------------------
 
 //defining reverse both
 function revboth(curr, prev) {
   revrotate.call(curr);
+  for (let i = 0; i < 100; i++) {
+    console.log(i);
+  }
   revrotate.call(prev);
 }
 
 //------------------------------------------------------------------
 
-//defining wait fn to wait for settimeout in revrotate
-function wait(a, b) {
-  revboth(a, b);
-}
 //declaring fn odd that keep card flipped if click is odd
 function odd(currin) {
   console.log(`i am odd with currundex of ${currin} and 
@@ -139,7 +149,7 @@ function checksrc(currin, previn) {
     rotate.call(cards[currin]);
     console.log(`sources are equal`);
   } else {
-    wait(currin, previn);
+    revboth(currin, previn);
   }
 }
 
