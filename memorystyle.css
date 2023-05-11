@@ -97,3 +97,25 @@ li a:hover {
   transform: rotateY(180deg);
   transition: all 1s ease;
 } */
+
+.overlay {
+  width: 100vw;
+  height: 100vh;
+  background-color: #000000db;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.box {
+  width: 200px;
+  height: 100px;
+  font-size: 30px;
+  background-color: #70c1b3;
+  color: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

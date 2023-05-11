@@ -124,9 +124,7 @@ function revrotate() {
 //defining reverse both
 function revboth(curr, prev) {
   revrotate.call(curr);
-  for (let i = 0; i < 100; i++) {
-    console.log(i);
-  }
+
   revrotate.call(prev);
 }
 
@@ -148,6 +146,7 @@ function checksrc(currin, previn) {
   if (imglist[currin].imgsrc == imglist[previn].imgsrc) {
     rotate.call(cards[currin]);
     console.log(`sources are equal`);
+    wincounter.value += 2;
   } else {
     revboth(currin, previn);
   }
@@ -163,6 +162,7 @@ function even(currin, previn) {
 //declaring fn that checks counter of no clicks is even or odd
 let clickcounter = 0;
 let preindex = -1;
+let wincounter = { value: 0 };
 function checkcounter(c, currin, previn) {
   if (c % 2 == 1) {
     odd(currin);
@@ -173,11 +173,41 @@ function checkcounter(c, currin, previn) {
   console.log(imglist[currin].imgsrc);
 }
 
+//defining fn to deactivate current screen
+
+function deactivateall() {
+  let overl = document.createElement("div");
+  overl.classList.add("overlay");
+  document.body.appendChild(overl);
+}
+
+//defining fn to diplay windoe to uder that  he won
+function displaywinbox() {
+  let box = document.createElement("div");
+  box.classList.add("box");
+  box.innerText = `you won`;
+  let o = document.querySelector(".overlay");
+  console.log(o);
+  o.appendChild(box);
+}
+//declaring fn end()
+function end() {
+  deactivateall();
+  displaywinbox();
+}
+//declaring fn wincheck to end game
+function wincheck(wc) {
+  console.log(wc);
+
+  if (wc.value == cards.length) end();
+}
+
 for (let i = 0; i < cards.length; i++) {
   let mycard = cards[i];
   cards[i].addEventListener("click", function () {
     clickcounter++;
     checkcounter(clickcounter, i, preindex);
     preindex = i;
+    wincheck(wincounter);
   });
 }
